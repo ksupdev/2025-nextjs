@@ -1,8 +1,7 @@
-//rfce
 import Link from 'next/link'
 import React from 'react'
 
-function page() {
+function AboutPage() {
   return (
     <div>
       <nav>
@@ -12,8 +11,9 @@ function page() {
           <Link href='/info'>Info</Link>
         </div>
       </nav>
+      AboutPage
     </div>
   )
 }
 
-export default page
+export default AboutPage
