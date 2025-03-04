@@ -60,8 +60,87 @@ npx create-next-app next-userActionState
 ✔ Would you like to customize the import alias (`@/*` by default)? … No / Yes
 ```
 
-Open the page.tsx file located at app/page.tsx and delete all its content. Then, use the rafce shortcut to generate the following code.
+## Basic without userActionState
 ```typescript
+"use client"
+
+import React from 'react'
+
+async function login(username: string, password: string) {
+
+  username = "karn.yong@melivecode.com"
+  password = "melivecode"
+  const response = await fetch("https://www.melivecode.com/api/login", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ username, password })
+  })
+
+  return response.json();
+}
+
+export default function basicLab() {
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const usernameEntry = formData.get("username")
+    const passwordEntry = formData.get("password")
+    //console.log(username, password)
+
+    // Check if entries are not null and cast them to string
+    const username = usernameEntry !== null ? usernameEntry.toString() : '';
+    const password = passwordEntry !== null ? passwordEntry.toString() : '';
+
+    const rest = await login(username.toString(), password.toString())
+    console.log(rest)
+
+  }
+
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+        <h2 className="mb-6 text-2xl font-bold text-center text-gray-700">Login</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-medium text-gray-600" htmlFor="username">
+              Email
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter your email"
+              className="w-full px-4 py-2 text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+              required autoComplete="username"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-medium text-gray-600" htmlFor="password">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              className="w-full px-4 py-2 text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+              required   autoComplete="current-password" 
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
+  )
+}
 ```
+
+## Basic with userActionState
 
 
