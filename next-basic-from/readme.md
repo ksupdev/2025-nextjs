@@ -1,8 +1,7 @@
 #Basic form
 
-// utils/actions.ts
+### utils/actions.ts
 ```typescript
-// utils/actions.ts
 'use server'
 
 import { revalidatePath } from "next/cache"
@@ -41,4 +40,102 @@ export async function fetchCamp() {
     return camps
 }
 
+```
+
+### components/FormUseFormStatus.tsx
+```typescript
+"use client"
+// import React, { useActionState } from 'react'
+import { createCamp } from '@/utils/actions'
+import { useActionState } from 'react'
+
+
+export default function FormUseFormStatus() {
+
+    const [message, formAction, pending] = useActionState(createCamp, null)
+
+    return (
+        <>
+            {message && <h1>{message}</h1>}
+            <form action={formAction} className="p-6 bg-white rounded-lg shadow-md">
+                <label className="block mb-2 text-sm font-medium text-gray-700" htmlFor="title">
+                    Camping Name
+                </label>
+                <input
+                    placeholder="Camping Name"
+                    name="title"
+                    className="w-full p-2 mb-4 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                    defaultValue="Bangkok"
+                    id="title"
+                />
+
+                <label className="block mb-2 text-sm font-medium text-gray-700" htmlFor="location">
+                    Location
+                </label>
+                <input
+                    placeholder="Location"
+                    name="location"
+                    className="w-full p-2 mb-4 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+                    defaultValue="Bangna"
+                    id="location"
+                />
+                <button type='submit' className="w-full py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300" disabled={pending}>
+                    {pending ? "Submiting...." : "Submit"}
+                </button>
+            </form>
+        </>
+
+    )
+}
+```
+
+### components/CampList.tsx
+```typescript
+
+import { fetchCamp } from '@/utils/actions';
+import React from 'react'
+
+//rfce
+async function CampList() {
+    const camps = await fetchCamp();
+    console.log(camps)
+    return (
+        <div>
+            {
+                camps.map((item, index) => {
+                    return <li key={item.id}>{item.title}</li>
+                })
+            }
+        </div>
+    )
+}
+
+export default CampList
+
+```
+
+### camp/page.tsx
+```typescript
+import FormBasic from '@/components/FormBasic'
+import FormUseActionStatus from '@/components/FormUseActionStatus'
+import React from 'react'
+import CampList from '@/components/CampList'
+
+const CamePage = () => {
+  return (
+    <div>
+      <p>Form userActionStatus</p>
+      <FormUseActionStatus />
+      <br />
+      <hr />
+      <p>Form Basic</p>
+      <FormBasic />
+
+      <hr />
+      <CampList />
+    </div>
+  )
+}
+
+export default CamePage
 ```
