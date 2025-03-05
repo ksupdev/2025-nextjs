@@ -161,3 +161,32 @@ function Counter() {
 
 export default Counter
 ```
+
+## Basic API
+
+### app/api/camp/route.ts
+```typescript
+import { fetchCamp } from "@/utils/actions"
+
+export async function GET(): Promise<Response> {
+    const camps = await fetchCamp()
+    return Response.json(camps)
+}
+```
+Test http://localhost:3000/api/camp
+```json
+[
+  {
+    "id": 1,
+    "title": "Bangkok"
+  },
+  {
+    "id": 2,
+    "title": "Ayu"
+  },
+  {
+    "id": 3,
+    "title": "Chaing"
+  }
+]
+```
