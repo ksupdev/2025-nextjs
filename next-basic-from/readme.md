@@ -167,11 +167,19 @@ export default Counter
 ### app/api/camp/route.ts
 ```typescript
 import { fetchCamp } from "@/utils/actions"
+import { NextResponse } from "next/server"
 
-export async function GET(): Promise<Response> {
+export async function GET(req: NextResponse): Promise<Response> {
+
+    const { searchParams } = new URL(req.url)
+    // console.log(req)
+    //http://localhost:3000/api/camp?name=dddd
+    console.log(searchParams.get("name"))
     const camps = await fetchCamp()
     return Response.json(camps)
 }
+
+
 ```
 Test http://localhost:3000/api/camp
 ```json
