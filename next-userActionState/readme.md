@@ -142,5 +142,114 @@ export default function basicLab() {
 ```
 
 ## Basic with userActionState
+```typescript
+"use client"
+
+import Image from 'next/image'
+import React, { useActionState } from 'react'
+
+async function login(previousState, formData) {
+
+  // username = "karn.yong@melivecode.com"
+  // password = "melivecode"
+  const username = formData.get("username")
+  const password = formData.get("password")
+
+  const response = await fetch("https://www.melivecode.com/api/login", {
+    method: "POST",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ username, password })
+  })
+
+  // console.log(response)
+
+  return response.json();
+}
+
+export default function basicLab() {
+
+  const [loginState, formAction, isPending] = useActionState(login, null)
+
+  console.log(loginState)
+
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+        <h2 className="mb-6 text-2xl font-bold text-center text-gray-700">Login</h2>
+        <form action={formAction} >
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-medium text-gray-600" htmlFor="username">
+              Email
+            </label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Enter your email"
+              className="w-full px-4 py-2 text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+              required autoComplete="username" defaultValue={'karn.yong@melivecode.com'}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block mb-2 text-sm font-medium text-gray-600" htmlFor="password">
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Enter your password"
+              className="w-full px-4 py-2 text-gray-700 border border-gray-300 rounded focus:outline-none focus:ring focus:ring-blue-500"
+              required autoComplete="current-password" defaultValue={'melivecode'}
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full py-2 text-white bg-blue-500 rounded hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+            disabled={isPending}>
+            {isPending ? "Loggin in .." : "Login"}
+          </button>
+        </form>
+        {loginState && (
+          <div>
+            {loginState.status === "ok" ? (
+              <div>
+                <p>{loginState.user.fname}</p>
+                <Image src={loginState.user.avatar} alt={'test'} width={100} height={100} />
+              </div>
+            ) : (
+              <div>
+                <p>{loginState.message}</p>
+              </div>
+            )}
+          </div>
+        )
+        }
+      </div>
+    </div >
+  )
+}
+```
+
+```typescript
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+  /* config options here */
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "www.melivecode.com",
+        pathname: "/**",
+      },
+    ]
+  }
+};
+
+export default nextConfig;
+
+```
 
 
