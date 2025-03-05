@@ -198,3 +198,20 @@ Test http://localhost:3000/api/camp
   }
 ]
 ```
+
+## Midleware
+next-v02/middleware.ts
+```typescript
+import { NextResponse } from "next/server"
+
+
+export default function middleware(req: Request) {
+    console.log("Hi Midleware")
+    return NextResponse.redirect(new URL("/", req.url))
+}
+
+export const config = {
+    //disable access path
+    matcher: ['/info/:part*','/about/:part*']
+}
+```
