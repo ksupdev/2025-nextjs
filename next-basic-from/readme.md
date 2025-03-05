@@ -114,7 +114,7 @@ export default CampList
 
 ```
 
-### camp/page.tsx
+### app/camp/page.tsx
 ```typescript
 import FormBasic from '@/components/FormBasic'
 import FormUseActionStatus from '@/components/FormUseActionStatus'
